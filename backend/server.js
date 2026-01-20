@@ -22,7 +22,7 @@ app.get('/setup', async (req, res) => {
     await pool.query(`
       CREATE TABLE IF NOT EXISTS users (
         id SERIAL PRIMARY KEY,
-        name VARCHAR(255) NOT NULL,
+        username VARCHAR(255) NOT NULL,
         email VARCHAR(255) NOT NULL,
         password VARCHAR(255) NOT NULL
       )
@@ -47,12 +47,22 @@ router.get('/users', async (req, res) => {
 
 router.post('/users', async (req, res) => {
   try {
-    const { name, email, password } = req.body
+    const { username, email, password } = req.body
     const result = await pool.query(
       'INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING *',
-      [name, email, password]
+      [username, email, password]
     )
     res.status(200).send(result.rows[0])
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ error: 'Internal server error' })
+  }
+})
+
+router.delete('/users', async (req, res) => {
+  try {
+    await pool.query('DROP TABLE IF EXISTS users')
+    res.status(200).send('Table dropped successfully')
   } catch (error) {
     console.error(error)
     res.status(500).json({ error: 'Internal server error' })
