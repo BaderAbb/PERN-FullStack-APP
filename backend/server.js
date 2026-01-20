@@ -35,6 +35,7 @@ app.get('/setup', async (req, res) => {
 })
 
 router.get('/users', async (req, res) => {
+  console.log('hitting users endpoint')
   try {
     const users = await pool.query('SELECT * FROM users')
     res.json(users.rows)

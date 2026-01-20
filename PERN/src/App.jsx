@@ -1,14 +1,24 @@
-import React from 'react'
-import Car from './components/Car'
+import { useState, useEffect } from 'react'
+import User from './components/User'
 
 const App = () => {
+  const [users, setusers] = useState([])
+
+  useEffect(() => {
+    fetch('api/users')
+      .then(response => response.json())
+      .then(data => setusers(data))
+  }, [])
+
+  console.log(users)
+
   return (
-    <div className='text-3xl font-bold text-red-950'>
-      <h1>Welcome to the car store</h1>
-      <ul>
-        <Car />
-        <Car />
-        <Car />
+    <div>
+      <h1>Users</h1>
+      <ul className='list-disc'>
+        {users.map(user => (
+          <User key={user.id} user={user} />
+        ))}
       </ul>
     </div>
   )
