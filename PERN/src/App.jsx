@@ -1,25 +1,15 @@
-import { useState, useEffect } from 'react'
-import User from './components/User'
+import React from 'react'
+import Navbar from './components/navbar/Navbar'
+import { Routes, Route } from 'react-router-dom'
+import Dashboard from './pages/dashboard'
 
 const App = () => {
-  const [users, setusers] = useState([])
-
-  useEffect(() => {
-    fetch('api/users')
-      .then(response => response.json())
-      .then(data => setusers(data))
-  }, [])
-
-  console.log(users)
-
   return (
     <div>
-      <h1>Users</h1>
-      <ul className='list-disc'>
-        {users.map(user => (
-          <User key={user.id} user={user} />
-        ))}
-      </ul>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Dashboard />} />
+      </Routes>
     </div>
   )
 }
