@@ -1,5 +1,5 @@
 ### Variables
-@baseUrl = http://localhost:3000/api
+@baseUrl = http://localhost:3000/api/users
 @contentType = application/json
 
 ### base url test
@@ -9,8 +9,11 @@ GET http://localhost:3000
 # USER ENDPOINTS
 #############################################
 
-### 1. Register a new user (basic)
-POST {{baseUrl}}/users/register
+### 1. Get all users
+GET {{baseUrl}}/
+
+### 2. Register a new user (basic)
+POST {{baseUrl}}/register
 Content-Type: {{contentType}}
 
 {
@@ -19,31 +22,9 @@ Content-Type: {{contentType}}
   "password": "SecurePass123!"
 }
 
-### 2. Register a new user (with bio)
-POST {{baseUrl}}/users/register
-Content-Type: {{contentType}}
-
-{
-  "username": "toyota_lover",
-  "email": "sarah@example.com",
-  "password": "MyPassword456!",
-  "bio": "JDM enthusiast, love Supras and Skylines!"
-}
-
-### 3. Register a new user (with profile picture)
-POST {{baseUrl}}/users/register
-Content-Type: {{contentType}}
-
-{
-  "username": "muscle_car_fan",
-  "email": "mike@example.com",
-  "password": "StrongPass789!",
-  "bio": "American muscle cars forever!",
-  "profile_picture_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
-}
-
-### 4. Login user
-POST {{baseUrl}}/users/login
+### 3. Login user
+# @name loginRequest
+POST {{baseUrl}}/login
 Content-Type: {{contentType}}
 
 {
@@ -51,122 +32,7 @@ Content-Type: {{contentType}}
   "password": "SecurePass123!"
 }
 
-### 5. Login with username (alternative)
-POST {{baseUrl}}/users/login
+### 4. Get current user profile
+GET {{baseUrl}}/me
+Authorization: Bearer {{loginRequest.response.body.token}}
 Content-Type: {{contentType}}
-
-{
-  "username": "car_enthusiast",
-  "password": "SecurePass123!"
-}
-
-#############################################
-# TEST CASES - Should fail
-#############################################
-
-### 6. Register with duplicate username (should fail - 409 Conflict)
-POST {{baseUrl}}/users/register
-Content-Type: {{contentType}}
-
-{
-  "username": "car_enthusiast",
-  "email": "different@example.com",
-  "password": "AnotherPass123!"
-}
-
-### 7. Register with duplicate email (should fail - 409 Conflict)
-POST {{baseUrl}}/users/register
-Content-Type: {{contentType}}
-
-{
-  "username": "different_user",
-  "email": "john@example.com",
-  "password": "AnotherPass123!"
-}
-
-### 8. Register with missing required fields (should fail - 400 Bad Request)
-POST {{baseUrl}}/users/register
-Content-Type: {{contentType}}
-
-{
-  "username": "incomplete_user",
-  "email": "incomplete@example.com"
-}
-
-### 9. Register with invalid email format (should fail - 400 Bad Request)
-POST {{baseUrl}}/users/register
-Content-Type: {{contentType}}
-
-{
-  "username": "invalid_email_user",
-  "email": "not-an-email",
-  "password": "ValidPass123!"
-}
-
-### 10. Register with weak password (should fail - 400 Bad Request)
-POST {{baseUrl}}/users/register
-Content-Type: {{contentType}}
-
-{
-  "username": "weak_pass_user",
-  "email": "weakpass@example.com",
-  "password": "123"
-}
-
-#############################################
-# UPDATE USER PROFILE
-#############################################
-
-### 11. Update user bio
-# Note: Replace {user_id} with actual UUID
-# Add: Authorization: Bearer {token}
-PUT {{baseUrl}}/users/550e8400-e29b-41d4-a716-446655440000
-Content-Type: {{contentType}}
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-
-{
-  "bio": "Updated bio: Classic car restoration specialist"
-}
-
-### 12. Update username
-PUT {{baseUrl}}/users/550e8400-e29b-41d4-a716-446655440000
-Content-Type: {{contentType}}
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-
-{
-  "username": "new_username_2024"
-}
-
-### 13. Update profile picture
-PUT {{baseUrl}}/users/550e8400-e29b-41d4-a716-446655440000
-Content-Type: {{contentType}}
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-
-{
-  "profile_picture_id": "b2c3d4e5-f6a7-8901-bcde-f12345678901"
-}
-
-### 14. Update password
-PUT {{baseUrl}}/users/550e8400-e29b-41d4-a716-446655440000/password
-Content-Type: {{contentType}}
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-
-{
-  "current_password": "SecurePass123!",
-  "new_password": "NewSecurePass456!"
-}
-
-#############################################
-# GET USER DATA
-#############################################
-
-### 15. Get user profile by ID
-GET {{baseUrl}}/users/550e8400-e29b-41d4-a716-446655440000
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-
-### 16. Get current user profile (authenticated)
-GET {{baseUrl}}/users/me
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-
-### 17. Get user by username
-GET {{baseUrl}}/users/username/car_enthusiast

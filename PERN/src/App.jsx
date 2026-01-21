@@ -1,16 +1,19 @@
-import React from 'react'
-import Navbar from './components/navbar/Navbar'
-import { Routes, Route } from 'react-router-dom'
-import Dashboard from './pages/dashboard'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { AuthProvider } from './context/AuthContext'
+import Home from './pages/Home'
+import Login from './pages/Login'
 
-const App = () => {
+function App () {
   return (
-    <div>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Dashboard />} />
-      </Routes>
-    </div>
+    <AuthProvider>
+      <div className='App'>
+        {/* Aquí iría tu Navbar en el futuro */}
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/login' element={<Login />} />
+        </Routes>
+      </div>
+    </AuthProvider>
   )
 }
 

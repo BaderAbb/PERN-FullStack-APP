@@ -1,5 +1,12 @@
 import { query as _query } from '../config/db.js'
 
+// Obtenemos todos los usuarios
+export const findAllUsers = async () => {
+    const query = `SELECT * FROM users`
+    const result = await _query(query)
+    return result.rows
+}
+
 // Crear un nuevo usuario
 export const createUser = async ({ username, email, passwordHash }) => {
   const query = `
