@@ -1,9 +1,10 @@
 ### Variables
-@baseUrl = http://localhost:3000/api/users
+@baseUrl = http://localhost:5000/api/users
+@baseUrlImages = http://localhost:5000/api/images
 @contentType = application/json
 
 ### base url test
-GET http://localhost:3000
+GET http://localhost:5000
 
 #############################################
 # USER ENDPOINTS
@@ -22,6 +23,16 @@ Content-Type: {{contentType}}
   "password": "SecurePass123!"
 }
 
+### 2. Register a another user (basic)
+POST {{baseUrl}}/register
+Content-Type: {{contentType}}
+
+{
+  "username": "toyota_enjoyer",
+  "email": "toyota@example.com",
+  "password": "ToyotaPass123!"
+}
+
 ### 3. Login user
 # @name loginRequest
 POST {{baseUrl}}/login
@@ -36,3 +47,23 @@ Content-Type: {{contentType}}
 GET {{baseUrl}}/me
 Authorization: Bearer {{loginRequest.response.body.token}}
 Content-Type: {{contentType}}
+
+
+# ==========================================
+# 4. SUBIR AVATAR (Multipart)
+# ==========================================
+###
+POST {{baseUrl}}/upload
+Authorization: Bearer {{loginRequest.response.body.token}}
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+# Campo del archivo (name="image" debe coincidir con upload.single('image'))
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="image"; filename="Profile_picture.png"
+Content-Type: image/png
+
+< ./.test/Profile_picture.png
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+### 5. Get all images
+GET {{baseUrlImages}}/

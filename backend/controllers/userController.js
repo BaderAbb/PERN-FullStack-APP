@@ -6,8 +6,10 @@ import {
   findUserByEmail,
   findUserByUsername,
   findUserById,
-  findAllUsers
+  findAllUsers,
+  updateUserAvatar
 } from '../models/userModel.js' // Importamos la capa de datos anterior
+import { createImage } from '../models/imageModel.js'
 
 // Generar JWT Token (función auxiliar)
 const generateToken = id => {
@@ -113,5 +115,32 @@ export const getAllUsers = async (req, res) => {
     res.status(200).json(users)
   } catch (error) {
     res.status(500).json({ message: 'Error al obtener usuarios' })
+  }
+}
+
+// @desc    Subir avatar
+// @route   POST /api/users/upload-avatar
+export const uploadAvatar = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: 'No se subió ningún archivo' })
+    }
+    const image = await createImage({
+      filename: req.file.filename,
+      original_filename: req.file.originalname,
+      file_path: req.file.path,
+      content_type: req.file.mimetype,
+      file_size: req.file.size,
+      uploaded_by: req.user.user_id
+    })
+
+    console.log(image)
+    
+    const updatedUser = await updateUserAvatar(req.user.user_id, image)
+    res.status(200).json(updatedUser)
+
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ message: 'Error al subir avatar' })
   }
 }

@@ -34,6 +34,13 @@ export const AuthProvider = ({ children }) => {
     return data;
   };
 
+  // Funcion de Registro
+  const register = async (userData) => {
+    const data = await authService.register(userData);
+    setUser(data.user);
+    return data;
+  };
+
   // Función de Logout
   const logout = () => {
     authService.logout();
@@ -41,7 +48,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading }}>
+    <AuthContext.Provider value={{ user, login, register, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );
