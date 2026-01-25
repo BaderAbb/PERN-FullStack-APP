@@ -9,6 +9,6 @@ router.post('/register', registerUser);
 router.post('/login', loginUser);
 router.get('/me', protect, getMe); 
 router.get('/', getAllUsers);
-router.post('/upload', protect, upload.single('image'), uploadAvatar);
+router.post('/upload', protect, upload.single('profile_picture'), uploadAvatar);
 
 export default router;

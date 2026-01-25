@@ -22,5 +22,5 @@ export const createImage = async (imageData) => {
   ]
 
   const result = await _query(query, values)
-  return result.rows[0].image_id
+  return result.rows[0]
 }

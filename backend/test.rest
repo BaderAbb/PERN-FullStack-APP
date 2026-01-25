@@ -59,7 +59,7 @@ Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0g
 
 # Campo del archivo (name="image" debe coincidir con upload.single('image'))
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
-Content-Disposition: form-data; name="image"; filename="Profile_picture.png"
+Content-Disposition: form-data; name="profile_picture"; filename="Profile_picture.png"
 Content-Type: image/png
 
 < ./.test/Profile_picture.png

@@ -47,8 +47,14 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
+  const updateUserAvatar = async (file) => {
+    const updatedUser = await authService.uploadAvatar(file);
+    setUser(updatedUser);
+    return updatedUser;
+  }
+
   return (
-    <AuthContext.Provider value={{ user, login, register, logout, loading }}>
+    <AuthContext.Provider value={{ user, login, register, logout, loading, updateUserAvatar }}>
       {children}
     </AuthContext.Provider>
   );

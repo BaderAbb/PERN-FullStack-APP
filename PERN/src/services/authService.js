@@ -29,11 +29,19 @@ const logout = () => {
   localStorage.removeItem('token');
 };
 
+const uploadAvatar = async (file) => {
+  const formData = new FormData();
+  formData.append('profile_picture', file);
+  const response = await api.post('/users/upload', formData);
+  return response.data;
+};
+
 const authService = {
   register,
   login,
   logout,
   getMe,
+  uploadAvatar,
 };
 
 export default authService;

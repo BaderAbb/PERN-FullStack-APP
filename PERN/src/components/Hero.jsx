@@ -26,7 +26,7 @@ const Hero = () => {
         {/* Main Heading */}
         <h1 className='text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6 animate-fade-in-up leading-tight'>
           Bienvenido a{' '}
-          <span className='bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent'>
+          <span className='bg-linear-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent'>
             CarS
           </span>
         </h1>
@@ -40,7 +40,7 @@ const Hero = () => {
         <div className='flex flex-col sm:flex-row gap-4 animate-fade-in-up animation-delay-400'>
           <button className='group relative bg-orange-500 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-orange-600 transition-all duration-300 shadow-lg hover:shadow-orange-500/50 hover:scale-105'>
             <span className='relative z-10'>Comenzar Ahora</span>
-            <div className='absolute inset-0 bg-gradient-to-r from-orange-600 to-orange-700 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300'></div>
+            <div className='absolute inset-0 bg-linear-to-r from-orange-600 to-orange-700 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300'></div>
           </button>
           
           <button className='backdrop-blur-sm bg-white/10 border-2 border-white/30 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white/20 transition-all duration-300 hover:scale-105'>
@@ -83,54 +83,6 @@ const Hero = () => {
           </svg>
         </div>
       </div>
-
-      {/* Custom CSS for animations */}
-      <style jsx>{`
-        @keyframes fade-in-down {
-          0% {
-            opacity: 0;
-            transform: translateY(-20px);
-          }
-          100% {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @keyframes fade-in-up {
-          0% {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          100% {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        .animate-fade-in-down {
-          animation: fade-in-down 0.8s ease-out forwards;
-        }
-
-        .animate-fade-in-up {
-          animation: fade-in-up 0.8s ease-out forwards;
-        }
-
-        .animation-delay-200 {
-          animation-delay: 0.2s;
-          opacity: 0;
-        }
-
-        .animation-delay-400 {
-          animation-delay: 0.4s;
-          opacity: 0;
-        }
-
-        .animation-delay-600 {
-          animation-delay: 0.6s;
-          opacity: 0;
-        }
-      `}</style>
     </div>
   );
 };
