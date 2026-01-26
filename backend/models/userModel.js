@@ -56,12 +56,22 @@ export const findUserByUsername = async username => {
 export const findUserById = async id => {
   // Excluimos el password_hash por seguridad en esta consulta
   const query = `
-        SELECT user_id, username, email, bio, profile_picture_id, created_at 
-        FROM users 
-        WHERE user_id = $1
+        SELECT u.user_id, u.username, u.email, u.bio, u.profile_picture_id, u.created_at, i.filename as profile_picture_url
+        FROM users u
+        LEFT JOIN images i ON u.profile_picture_id = i.image_id
+        WHERE u.user_id = $1;
     `
   const result = await _query(query, [id])
-  return result.rows[0]
+
+  if (result.rows[0]) {
+    const user = result.rows[0]
+    if (user.profile_picture_url) {
+      user.profile_picture_url = user.profile_picture_url
+    }
+    return user
+  }
+
+  return null
 }
 
 // Actualizar avatar de usuario

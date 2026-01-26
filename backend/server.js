@@ -8,7 +8,7 @@ const port = process.env.PORT || 5000
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
-app.use('/uploads', express.static('./public/uploads'))
+app.use('/public/avatar', express.static('./public/uploads'))
 
 app.use('/api/users', userRoutes)
 app.use('/api/images', imagesRoutes)

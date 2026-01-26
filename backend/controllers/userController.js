@@ -136,7 +136,7 @@ export const uploadAvatar = async (req, res) => {
 
     console.log(image)
     
-    const updatedUser = await updateUserAvatar(req.user.user_id, image)
+    const updatedUser = await updateUserAvatar(req.user.user_id, image.image_id)
     res.status(200).json(updatedUser)
 
   } catch (error) {
