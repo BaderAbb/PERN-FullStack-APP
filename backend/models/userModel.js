@@ -40,9 +40,23 @@ export const createUserWithBio = async ({
 
 // Buscar usuario por Email (útil para el Login y evitar duplicados)
 export const findUserByEmail = async email => {
-  const query = `SELECT * FROM users WHERE email = $1`
+  const query = `SELECT u.*, i.filename as profile_picture_url
+                  FROM users u
+                  LEFT JOIN images i ON u.profile_picture_id = i.image_id
+                  WHERE u.email = $1`
   const result = await _query(query, [email])
-  return result.rows[0]
+
+  //agregamos el URL del avatar para que se muestre la imagen al hacer login
+  if (result.rows[0]) {
+    const user = result.rows[0]
+    if (user.profile_picture_url) {
+      user.profile_picture_url =
+        'http://localhost:5000/uploads/' + user.profile_picture_url
+    }
+    return user
+  }
+
+  return null
 }
 
 // Buscar usuario por Username (para evitar duplicados o perfiles)
@@ -63,6 +77,7 @@ export const findUserById = async id => {
     `
   const result = await _query(query, [id])
 
+  // Si encontramos el usuario, agregamos la URL del avatar
   if (result.rows[0]) {
     const user = result.rows[0]
     if (user.profile_picture_url) {
@@ -83,5 +98,16 @@ export const updateUserAvatar = async (userId, imageId) => {
         RETURNING *;
     `
   const result = await _query(query, [imageId, userId])
+  return result.rows[0]
+}
+
+export const updateBio = async (userId, bio) => {
+  const query = `
+        UPDATE users 
+        SET bio = $1, updated_at = CURRENT_TIMESTAMP
+        WHERE user_id = $2
+        RETURNING *;
+    `
+  const result = await _query(query, [bio, userId])
   return result.rows[0]
 }

@@ -48,11 +48,19 @@ GET {{baseUrl}}/me
 Authorization: Bearer {{loginRequest.response.body.token}}
 Content-Type: {{contentType}}
 
+### 5. Update user bio
+PUT {{baseUrl}}/update-bio
+Authorization: Bearer {{loginRequest.response.body.token}}
+Content-Type: {{contentType}}
+
+{
+  "bio": "I love cars and motorcycles!"
+}
 
 # ==========================================
 # 4. SUBIR AVATAR (Multipart)
 # ==========================================
-###
+### 
 POST {{baseUrl}}/upload
 Authorization: Bearer {{loginRequest.response.body.token}}
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW

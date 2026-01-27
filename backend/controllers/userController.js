@@ -7,9 +7,11 @@ import {
   findUserByUsername,
   findUserById,
   findAllUsers,
-  updateUserAvatar
+  updateUserAvatar,
+  updateBio
 } from '../models/userModel.js' // Importamos la capa de datos anterior
-import { createImage } from '../models/imageModel.js'
+import { createImage, deleteImage, getImageById } from '../models/imageModel.js'
+import fs from 'fs/promises'
 
 // Generar JWT Token (función auxiliar)
 const generateToken = id => {
@@ -82,7 +84,8 @@ export const loginUser = async (req, res) => {
           username: user.username,
           email: user.email,
           bio: user.bio,
-          profile_picture: user.profile_picture_id // Esto lo manejaremos luego con las imágenes
+          profile_picture: user.profile_picture_id, // Esto lo manejaremos luego con las imágenes
+          profile_picture_url: user.profile_picture_url
         },
         token: generateToken(user.user_id)
       })
@@ -119,7 +122,7 @@ export const getAllUsers = async (req, res) => {
 }
 
 // @desc    Subir avatar
-// @route   POST /api/users/upload-avatar
+// @route   POST /api/users/upload
 export const uploadAvatar = async (req, res) => {
   try {
     if (!req.file) {
@@ -134,11 +137,51 @@ export const uploadAvatar = async (req, res) => {
       uploaded_by: req.user.user_id
     })
 
-    const updatedUser = await updateUserAvatar(req.user.user_id, image.image_id)
-    res.status(200).json(updatedUser)
+    const user = await findUserById(req.user.user_id)
+    if (user.profile_picture_id) {
+      // Recuperamos los datos de la imagen ANTES de borrar nada
+      const oldImage = await getImageById(user.profile_picture_id)
 
+      // Es buena práctica verificar si oldImage existe por si acaso la integridad de datos falló
+      if (oldImage) {
+        // Intentamos borrar el archivo físico
+        try {
+          await fs.unlink(oldImage.file_path)
+          console.log(`Archivo borrado debido a que se subio un nuevo avatar: ${oldImage.file_path}`)
+        } catch (error) {
+          // Si el archivo no existe en disco (ej: alguien lo borró a mano),
+          // no queremos que explote la app, solo lo logueamos y seguimos.
+          console.error('Error borrando archivo físico antiguo:', error.message)
+        }
+
+        // Ahora que ya no tenemos el archivo, borramos el registro de la BD
+        await deleteImage(user.profile_picture_id)
+      }
+    }
+
+    const updatedUser = await updateUserAvatar(req.user.user_id, image.image_id)
+    updatedUser.profile_picture_url = `http://localhost:5000/uploads/${image.filename}`
+
+    res.status(200).json(updatedUser)
   } catch (error) {
     console.error(error)
     res.status(500).json({ message: 'Error al subir avatar' })
+  }
+}
+
+// @desc    Actualizar bio
+// @route   PUT /api/users/update-bio
+export const updateUserBio = async (req, res) => {
+  try {
+    const { bio } = req.body
+    const user = await findUserById(req.user.user_id)
+    if (!user) {
+      return res.status(404).json({ message: 'Usuario no encontrado' })
+    }
+    const updatedUser = await updateBio(req.user.user_id, bio)
+    res.status(200).json(updatedUser)
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ message: 'Error al actualizar bio' })
   }
 }

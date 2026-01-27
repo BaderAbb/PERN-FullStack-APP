@@ -36,6 +36,7 @@ const Home = () => {
                 </div>
                 <div className='px-4 py-5 sm:p-6'>
                   <div className='grid grid-cols-2 gap-4'>
+                    {/* Avatar */}
                     <div className='px-4 py-5 sm:px-6 flex justify-between items-center'>
                       <div>
                         <h3 className='text-lg leading-6 font-medium text-gray-900'>
@@ -48,6 +49,16 @@ const Home = () => {
                       {/* Aquí integramos el componente */}
                       <AvatarSelector />
                     </div>
+                    {/* Biografia */}
+                    <div className='bg-blue-50 p-4 rounded-lg'>
+                      <p className='text-sm font-medium text-blue-600'>
+                        Biografia
+                      </p>
+                      <p className='text-2xl font-semibold text-gray-900'>
+                        {user.bio}
+                      </p>
+                    </div>
+                    {/* Email */}
                     <div className='bg-indigo-50 p-4 rounded-lg'>
                       <p className='text-sm font-medium text-indigo-600'>
                         Email registrado
@@ -56,6 +67,7 @@ const Home = () => {
                         {user.email}
                       </p>
                     </div>
+                    {/* Username */}
                     <div className='bg-green-50 p-4 rounded-lg'>
                       <p className='text-sm font-medium text-green-600'>
                         Nombre de usuario

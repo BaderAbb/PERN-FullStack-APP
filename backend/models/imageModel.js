@@ -6,6 +6,12 @@ export const getAllImages = async () => {
   return result.rows
 }
 
+export const getImageById = async (imageId) => {
+  const query = 'SELECT * FROM images WHERE image_id = $1'
+  const result = await _query(query, [imageId])
+  return result.rows[0]
+}
+
 export const createImage = async (imageData) => {
   const query = `
         INSERT INTO images (filename, original_filename, file_path, content_type, file_size, uploaded_by)
