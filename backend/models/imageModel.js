@@ -24,3 +24,9 @@ export const createImage = async (imageData) => {
   const result = await _query(query, values)
   return result.rows[0]
 }
+
+export const deleteImage = async (imageId) => {
+  const query = 'DELETE FROM images WHERE image_id = $1'
+  const result = await _query(query, [imageId])
+  return result.rows[0]
+}

@@ -2,9 +2,6 @@ import axios from 'axios';
 
 const api = axios.create({
   baseURL: 'http://localhost:5000/api', // Ajusta si tu puerto cambia
-  headers: {
-    'Content-Type': 'application/json',
-  },
 });
 
 // Interceptor: Antes de enviar la petición, inyecta el token si existe

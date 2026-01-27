@@ -48,6 +48,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const updateUserAvatar = async (file) => {
+    console.log("Subiendo imagen...", file);
     const updatedUser = await authService.uploadAvatar(file);
     setUser(updatedUser);
     return updatedUser;

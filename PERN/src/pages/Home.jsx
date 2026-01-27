@@ -1,6 +1,7 @@
 import useAuth from '../hooks/useAuth'
 import { Link } from 'react-router-dom'
 import Navbar from '../components/layout/navbar/Navbar'
+import AvatarSelector from '../components/common/AvatarSelector'
 
 const Home = () => {
   const { user, logout, loading } = useAuth()
@@ -34,7 +35,19 @@ const Home = () => {
                   </p>
                 </div>
                 <div className='px-4 py-5 sm:p-6'>
-                  <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
+                  <div className='grid grid-cols-2 gap-4'>
+                    <div className='px-4 py-5 sm:px-6 flex justify-between items-center'>
+                      <div>
+                        <h3 className='text-lg leading-6 font-medium text-gray-900'>
+                          Tu Perfil
+                        </h3>
+                        <p className='mt-1 max-w-2xl text-sm text-gray-500'>
+                          Gestiona tu identidad visual.
+                        </p>
+                      </div>
+                      {/* Aquí integramos el componente */}
+                      <AvatarSelector />
+                    </div>
                     <div className='bg-indigo-50 p-4 rounded-lg'>
                       <p className='text-sm font-medium text-indigo-600'>
                         Email registrado

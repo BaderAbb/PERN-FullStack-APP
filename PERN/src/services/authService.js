@@ -32,7 +32,9 @@ const logout = () => {
 const uploadAvatar = async (file) => {
   const formData = new FormData();
   formData.append('profile_picture', file);
+  console.log('realizando peticion...');
   const response = await api.post('/users/upload', formData);
+  console.log(response.data);
   return response.data;
 };
 

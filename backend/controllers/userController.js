@@ -134,8 +134,6 @@ export const uploadAvatar = async (req, res) => {
       uploaded_by: req.user.user_id
     })
 
-    console.log(image)
-    
     const updatedUser = await updateUserAvatar(req.user.user_id, image.image_id)
     res.status(200).json(updatedUser)
 

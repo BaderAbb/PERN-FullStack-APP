@@ -66,7 +66,7 @@ export const findUserById = async id => {
   if (result.rows[0]) {
     const user = result.rows[0]
     if (user.profile_picture_url) {
-      user.profile_picture_url = user.profile_picture_url
+      user.profile_picture_url = 'http://localhost:5000/uploads/' + user.profile_picture_url
     }
     return user
   }
@@ -74,7 +74,7 @@ export const findUserById = async id => {
   return null
 }
 
-// Actualizar avatar de usuario
+// Actualizar avatar de usuario y eliminar la imagen anterior de la base de datos
 export const updateUserAvatar = async (userId, imageId) => {
   const query = `
         UPDATE users 
