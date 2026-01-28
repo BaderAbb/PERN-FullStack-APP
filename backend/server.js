@@ -2,6 +2,8 @@ import express from 'express'
 import cors from 'cors'
 import userRoutes from './routes/userRoutes.js' // Recuerda el .js
 import imagesRoutes from './routes/imagesRoutes.js'
+import postRoutes from './routes/postRoutes.js'
+
 const app = express()
 const port = process.env.PORT || 5000
 
@@ -12,6 +14,7 @@ app.use('/uploads', express.static('./public/uploads'))
 
 app.use('/api/users', userRoutes)
 app.use('/api/images', imagesRoutes)
+app.use('/api/posts', postRoutes);
 
 app.get('/', (req, res) => {
   res.send('API de Car Social Network funcionando 🚗')

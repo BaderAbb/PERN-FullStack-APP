@@ -81,7 +81,8 @@ export const findUserById = async id => {
   if (result.rows[0]) {
     const user = result.rows[0]
     if (user.profile_picture_url) {
-      user.profile_picture_url = 'http://localhost:5000/uploads/' + user.profile_picture_url
+      user.profile_picture_url =
+        'http://localhost:5000/uploads/' + user.profile_picture_url
     }
     return user
   }
