@@ -117,3 +117,8 @@ My new Toyota Supra!
 
 ### 2. Get all posts
 GET {{baseUrlPosts}}
+
+### 3. Get my posts
+GET {{baseUrlPosts}}/me
+Authorization: Bearer {{loginRequest.response.body.token}}
+Content-Type: {{contentType}}

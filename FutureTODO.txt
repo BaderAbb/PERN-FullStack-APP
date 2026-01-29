@@ -1,0 +1,1 @@
+1. Usar rutas absolutas en express static, para que funcione sin errores en producción.

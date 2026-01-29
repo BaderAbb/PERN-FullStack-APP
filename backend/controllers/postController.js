@@ -48,6 +48,31 @@ export const createNewPost = async (req, res) => {
   }
 };
 
+// @desc    Obtener mis posts
+// @route   GET /api/posts/my-posts
+export const getMyPosts = async (req, res) => {
+  try {
+    const posts = await getAllPostsFromUser(req.user.user_id);
+
+    const myPosts = posts.map(post => ({
+      ...post,
+      // URL de la foto del coche
+      post_image_url: post.post_image_file 
+        ? BASE_URL + post.post_image_file 
+        : null,
+      // URL del avatar del autor
+      author_avatar_url: post.author_avatar_file 
+        ? BASE_URL + post.author_avatar_file 
+        : null
+    }));
+
+    res.status(200).json(myPosts);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error al obtener mis posts' });
+  }
+};
+
 // @desc    Obtener el Feed completo
 // @route   GET /api/posts
 export const getFeed = async (req, res) => {

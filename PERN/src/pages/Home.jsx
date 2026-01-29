@@ -1,10 +1,19 @@
+import { useEffect } from 'react'
 import useAuth from '../hooks/useAuth'
 import { Link } from 'react-router-dom'
 import Navbar from '../components/layout/navbar/Navbar'
 import AvatarSelector from '../components/common/AvatarSelector'
+import CreatePostForm from '../components/posts/CreatePostForm'
+import usePosts from '../hooks/usePosts'
+import PostCard from '../components/posts/PostCard'
 
 const Home = () => {
   const { user, logout, loading } = useAuth()
+  const { posts, getMyPosts } = usePosts()
+
+  useEffect(() => {
+    getMyPosts()
+  }, [])
 
   if (loading) {
     return (
@@ -79,13 +88,42 @@ const Home = () => {
                   </div>
                 </div>
               </div>
+              {/* Create Post Form */}
+              <CreatePostForm />
 
-              {/* Placeholder para Feed de Posts */}
-              <div className='border-4 border-dashed border-gray-200 rounded-lg h-96 flex items-center justify-center'>
-                <p className='text-gray-400 text-lg'>
-                  Aquí irán los posts de coches próximamente...
-                </p>
-              </div>
+              <h3 className='text-xl font-bold text-gray-800 mb-4'>
+                Últimas Publicaciones
+              </h3>
+
+              {/* Lógica de Renderizado del Feed */}
+
+              {/* A. Si está cargando, mostramos un Spinner */}
+              {loading && (
+                <div className='flex justify-center py-10'>
+                  <div className='animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600'></div>
+                </div>
+              )}
+
+              {/* B. Si no carga y hay posts, los mostramos */}
+              {!loading && posts.length > 0 ? (
+                <div className='space-y-6'>
+                  {posts.map(post => (
+                    <PostCard key={post.post_id} post={post} />
+                  ))}
+                </div>
+              ) : null}
+
+              {/* C. Si no carga y NO hay posts (Array vacío) */}
+              {!loading && posts.length === 0 && (
+                <div className='text-center py-10 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300'>
+                  <p className='text-gray-500 text-lg'>
+                    Aún no hay publicaciones.
+                  </p>
+                  <p className='text-gray-400'>
+                    ¡Sé el primero en presumir tu coche!
+                  </p>
+                </div>
+              )}
             </div>
           ) : (
             // Vista para usuarios no logueados (Landing simple)

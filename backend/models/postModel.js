@@ -38,6 +38,7 @@ export const getAllPostsFromUser = async user_id => {
                     JOIN users u ON p.user_id = u.user_id
                     LEFT JOIN images img_car ON p.image_id = img_car.image_id
                     LEFT JOIN images img_avatar ON u.profile_picture_id = img_avatar.image_id
+                    WHERE p.user_id = $1
                     ORDER BY p.created_at DESC;`
   const values = [user_id]
   const result = await _query(query, values)
